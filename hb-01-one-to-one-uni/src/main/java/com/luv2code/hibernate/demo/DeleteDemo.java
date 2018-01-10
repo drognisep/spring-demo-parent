@@ -1,0 +1,41 @@
+package com.luv2code.hibernate.demo;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import com.luv2code.hibernate.demo.entity.Instructor;
+import com.luv2code.hibernate.demo.entity.InstructorDetail;
+
+public class DeleteDemo {
+
+	public static void main(String[] args) {
+		SessionFactory factory = new Configuration()
+				.configure("hibernate.cfg.xml")
+				.addAnnotatedClass(Instructor.class)
+				.addAnnotatedClass(InstructorDetail.class)
+				.buildSessionFactory();
+		Session session = factory.getCurrentSession();
+		
+		try {
+			System.out.println("Beginning transaction");
+			session.beginTransaction();
+			
+			Instructor i = session.get(Instructor.class, 2);
+			System.out.println("Found Instructor: " + i);
+			
+			System.out.println("Deleting Instructor and InstructorDetail");
+			if(i != null) {
+				session.delete(i);
+			} else {
+				System.out.println("Detected NULL entity");
+			}
+			
+			session.getTransaction().commit();
+			System.out.println("Transaction completed!");
+		} finally {
+			factory.close();
+		}
+	}
+
+}

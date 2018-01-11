@@ -7,8 +7,15 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<!-- We want XML configured coaches to use the random service instead... Just 'cause we can. -->
+	<bean id="fortuneService" class="com.luv2code.springdemo.fortune.RandomFortuneService" />
+
     <bean id="myCoach" class="com.luv2code.springdemo.SoccorCoach">
-    	
+    	<!-- 
+    		We can pass constructor arguments!
+    		This one uses a reference to a previously defined bean, we can also just pass primitive types if necessary. 
+    	-->
+    	<constructor-arg ref="fortuneService"></constructor-arg>
     </bean>
     
 </beans>

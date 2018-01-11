@@ -1,11 +1,11 @@
-#IoC Example
+# IoC Example
 
 Run `HelloSpringApp.java` to see the below output (without Spring setup text):
 
 ```
-Get 'Coach' by Class
+Get 'Coach' by Class. Highlander rules, there can be only one.
 Today's workout is "Run until you die from it!", and your fortune is "Today is going to be a great day!"
-Get 'Coach' by config ID
+Get 'Coach' by config ID (config method name)
 Today's workout is "Run until you die from it!", and your fortune is "Today is going to be a great day!"
 Same 'Coach' instance between invocations? true
 Same 'FortuneService' instance between invocations? false

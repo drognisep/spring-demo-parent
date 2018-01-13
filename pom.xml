@@ -249,5 +249,6 @@
 		<module>spring-demo-one</module>
     <module>spring-mvc-demo</module>
     <module>hibernate-tutorial</module>
-	</modules>
+    <module>spring-crm-project</module>
+  </modules>
 </project>

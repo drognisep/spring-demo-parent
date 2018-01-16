@@ -12,10 +12,8 @@
 	font-weight: bold;
 }
 </style>
-<jsp:include page="../includes/app-style.jsp" />
 </head>
 <body>
-	<jsp:include page="../includes/top-frame.jsp" />
 	<h3>Update the Customer ${customer.lastName}, ${customer.firstName}</h3>
 	<form:form id="update-customer-form" action="${pageContext.request.contextPath}/customers/update/${customer.id}" method="POST" commandName="customer">
 		First Name <form:input path="firstName" value="${customer.firstName}" />

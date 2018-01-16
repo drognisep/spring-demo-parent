@@ -12,10 +12,8 @@
 	font-weight: bold;
 }
 </style>
-<jsp:include page="../includes/app-style.jsp" />
 </head>
 <body>
-	<jsp:include page="../includes/top-frame.jsp" />
 	<h3>Add a New Customer</h3>
 	<form:form id="new-customer-form" action="add" method="POST" commandName="customer">
 		First Name <form:input path="firstName" placeholder="Enter First Name" />

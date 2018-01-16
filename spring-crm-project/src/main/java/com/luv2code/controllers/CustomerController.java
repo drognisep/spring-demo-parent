@@ -41,18 +41,20 @@ public class CustomerController {
 				CustomerEncoder.encodeInPlace(c);
 			});
 			model.addAttribute("customers", customers);
+			model.addAttribute("viewName", "customers-list");
 		} catch (Exception ex) {
 			System.err.println("\nError occurred retrieving Customers: " + ex.getMessage() + "\n");
 			return "error";
 		}
-		return "customers-list";
+		return "view-template";
 	}
 	
 	@RequestMapping(path="/add-form", method=RequestMethod.GET)
 	public String addCustomerForm(Model model) {
 		Customer c = new Customer();
 		model.addAttribute("customer", c);
-		return "add-customer-form";
+		model.addAttribute("viewName", "add-customer-form");
+		return "view-template";
 	}
 	
 	@RequestMapping(path="/add", method=RequestMethod.POST)
@@ -85,7 +87,8 @@ public class CustomerController {
 			session.getTransaction().commit();
 			if(c != null) {
 				model.addAttribute("customer", c);
-				return "update-form";
+				model.addAttribute("viewName", "update-form");
+				return "view-template";
 			}
 			
 			System.err.println("Unable to find customer with id: " + id);

@@ -16,29 +16,24 @@
 			}
 		}
 	</script>
-	<jsp:include page="../includes/app-style.jsp" />
 </head>
 <body>
-	<div style="width: 90%; margin-left: 5%">
-		<jsp:include page="../includes/top-frame.jsp" />
-		
-		<a href="${pageContext.request.contextPath}/customers/add-form"><button>Add a New Customer</button></a>
-		
-		<table style="width:100%;">
-			<tr><th>First Name</th><th>Last Name</th><th>Email Name</th><th>Action</th></tr>
-			<c:if test="${empty customers}">
-				<tr><td colspan="4" style="text-align: center;font-weight:bold;">No Customers Found</td></tr>
-			</c:if>
-			<c:forEach var="c" items="${customers}">
-				<tr><td>${c.firstName}</td><td>${c.lastName}</td><td>${c.email}</td>
-					<td>
-						<a href="update-form/${c.id}">Update</a> - 
-						<form style="display:inline" id="delete-${c.id}" action="${pageContext.request.contextPath}/customers/delete/${c.id}" method="POST">
-							<a href="#" onclick="confirmDelete(event, 'delete-${c.id}')">Delete</a>
-						</form>
-				</td></tr>
-			</c:forEach>
-		</table>
-	</div>
+	<a href="${pageContext.request.contextPath}/customers/add-form"><button>Add a New Customer</button></a>
+	
+	<table style="width:100%;">
+		<tr><th>First Name</th><th>Last Name</th><th>Email Name</th><th>Action</th></tr>
+		<c:if test="${empty customers}">
+			<tr><td colspan="4" style="text-align: center;font-weight:bold;">No Customers Found</td></tr>
+		</c:if>
+		<c:forEach var="c" items="${customers}">
+			<tr><td>${c.firstName}</td><td>${c.lastName}</td><td>${c.email}</td>
+				<td>
+					<a href="update-form/${c.id}">Update</a> - 
+					<form style="display:inline" id="delete-${c.id}" action="${pageContext.request.contextPath}/customers/delete/${c.id}" method="POST">
+						<a href="#" onclick="confirmDelete(event, 'delete-${c.id}')">Delete</a>
+					</form>
+			</td></tr>
+		</c:forEach>
+	</table>
 </body>
 </html>

@@ -25,11 +25,6 @@
   	<artifactId>hibernate-validator</artifactId>
   </dependency>
   <dependency>
-  	<groupId>com.saylorsolutions</groupId>
-  	<artifactId>crm-project-credentials</artifactId>
-  	<version>0.0.1-SNAPSHOT</version>
-  </dependency>
-  <dependency>
   	<groupId>org.owasp.encoder</groupId>
   	<artifactId>encoder</artifactId>
   	<version>1.2.1</version>
@@ -50,6 +45,11 @@
   <dependency>
   	<groupId>mysql</groupId>
   	<artifactId>mysql-connector-java</artifactId>
+  </dependency>
+  <dependency>
+  	<groupId>com.saylorsolutions</groupId>
+  	<artifactId>crm-project-credentials</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
   </dependency>
   </dependencies>
   <build>

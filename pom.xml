@@ -250,5 +250,6 @@
     <module>spring-mvc-demo</module>
     <module>hibernate-tutorial</module>
     <module>spring-crm-project</module>
-  </modules>
+    <module>crm-project-credentials</module>
+	</modules>
 </project>

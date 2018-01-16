@@ -14,10 +14,6 @@
   <dependencies>
   <dependency>
   	<groupId>org.springframework</groupId>
-  	<artifactId>spring-web</artifactId>
-  </dependency>
-  <dependency>
-  	<groupId>org.springframework</groupId>
   	<artifactId>spring-context</artifactId>
   </dependency>
   <dependency>
@@ -27,6 +23,33 @@
   <dependency>
   	<groupId>org.hibernate</groupId>
   	<artifactId>hibernate-validator</artifactId>
+  </dependency>
+  <dependency>
+  	<groupId>com.saylorsolutions</groupId>
+  	<artifactId>crm-project-credentials</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  <dependency>
+  	<groupId>org.owasp.encoder</groupId>
+  	<artifactId>encoder</artifactId>
+  	<version>1.2.1</version>
+  </dependency>
+  <dependency>
+  	<groupId>org.springframework</groupId>
+  	<artifactId>spring-webmvc</artifactId>
+  </dependency>
+  <dependency>
+  	<groupId>javax</groupId>
+  	<artifactId>javaee-api</artifactId>
+  	<scope>provided</scope>
+  </dependency>
+  <dependency>
+  	<groupId>javax.servlet.jsp.jstl</groupId>
+  	<artifactId>javax.servlet.jsp.jstl-api</artifactId>
+  </dependency>
+  <dependency>
+  	<groupId>mysql</groupId>
+  	<artifactId>mysql-connector-java</artifactId>
   </dependency>
   </dependencies>
   <build>

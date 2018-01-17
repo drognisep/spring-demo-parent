@@ -1,6 +1,8 @@
 package com.luv2code.controllers;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.luv2code.controllers.util.CustomerEncoder;
+import com.luv2code.controllers.util.ViewTemplate;
 import com.luv2code.entities.Customer;
 
 @RequestMapping("/customers")
@@ -40,8 +43,10 @@ public class CustomerController {
 			customers.stream().forEach((c) -> {
 				CustomerEncoder.encodeInPlace(c);
 			});
+			customers = customers.stream().sorted(Comparator.comparing(Customer::getLastName)).collect(Collectors.toList());
 			model.addAttribute("customers", customers);
 			model.addAttribute("viewName", "customers-list");
+			model.addAttribute("title", "Customers - Listing");
 		} catch (Exception ex) {
 			System.err.println("\nError occurred retrieving Customers: " + ex.getMessage() + "\n");
 			return "error";
@@ -49,18 +54,17 @@ public class CustomerController {
 		return "view-template";
 	}
 	
-	@RequestMapping(path="/add-form", method=RequestMethod.GET)
+	@RequestMapping(path="/add", method=RequestMethod.GET)
 	public String addCustomerForm(Model model) {
 		Customer c = new Customer();
 		model.addAttribute("customer", c);
-		model.addAttribute("viewName", "add-customer-form");
-		return "view-template";
+		return ViewTemplate.sendViewTemplate(model, "add-customer-form", "Add Customer");
 	}
 	
 	@RequestMapping(path="/add", method=RequestMethod.POST)
-	public String addCustomer(@Valid @ModelAttribute Customer customer, BindingResult result) {
+	public String addCustomer(@Valid @ModelAttribute Customer customer, BindingResult result, Model model) {
 		if(result == null || result.hasErrors()) {
-			return "add-customer-form";
+			return ViewTemplate.sendViewTemplate(model, "add-customer-form", "Add Customer");
 		}
 		
 		try (Session session = factory.getCurrentSession();) {
@@ -76,7 +80,7 @@ public class CustomerController {
 		}
 	}
 	
-	@RequestMapping(path="/update-form/{id}", method=RequestMethod.GET)
+	@RequestMapping(path="/update/{id}", method=RequestMethod.GET)
 	public String updateCustomerForm(@PathVariable int id, Model model) {
 		try(Session session = factory.getCurrentSession();) {
 			session.beginTransaction();
@@ -87,8 +91,7 @@ public class CustomerController {
 			session.getTransaction().commit();
 			if(c != null) {
 				model.addAttribute("customer", c);
-				model.addAttribute("viewName", "update-form");
-				return "view-template";
+				return ViewTemplate.sendViewTemplate(model, "update-form", "Update Customer");
 			}
 			
 			System.err.println("Unable to find customer with id: " + id);
@@ -98,11 +101,11 @@ public class CustomerController {
 			return "error";
 		}
 	}
-	
+
 	@RequestMapping(path="/update/{id}", method=RequestMethod.POST)
-	public String updateCustomer(@Valid @ModelAttribute Customer customer, BindingResult result, @PathVariable int id) {
+	public String updateCustomer(@Valid @ModelAttribute Customer customer, BindingResult result, @PathVariable int id, Model model) {
 		if(result.hasErrors()) {
-			return "update-form";
+			return ViewTemplate.sendViewTemplate(model, "update-form", "Update Customer");
 		}
 		
 		CustomerEncoder.encodeInPlace(customer);

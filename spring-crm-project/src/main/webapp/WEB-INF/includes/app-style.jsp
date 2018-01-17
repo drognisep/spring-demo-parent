@@ -5,9 +5,6 @@
 	box-sizing: border-box;
 	font-family: Arial, sans-serif;
 }
-table {
-	margin-top: 21.440px;
-}
 table, tbody {
 	margin: 0;
 	padding: 0;

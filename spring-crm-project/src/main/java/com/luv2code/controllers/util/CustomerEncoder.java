@@ -2,7 +2,7 @@ package com.luv2code.controllers.util;
 
 import org.owasp.encoder.Encode;
 
-import com.luv2code.entities.Customer;
+import com.luv2code.dto.Customer;
 
 public class CustomerEncoder {
 	public static Customer encode(Customer customer) {

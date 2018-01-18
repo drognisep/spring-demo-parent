@@ -4,7 +4,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.luv2code.entities.Customer;
+import com.luv2code.data.EntityDtoConverter;
+import com.luv2code.data.util.CustomerConverter;
+import com.luv2code.dto.Customer;
+import com.luv2code.entities.CustomerEntity;
 
 @Configuration
 public class AppConfig {
@@ -12,8 +15,13 @@ public class AppConfig {
 	public SessionFactory customerSessionFactory() {
 		SessionFactory factory = new org.hibernate.cfg.Configuration()
 				.configure("hibernate.cfg.xml")
-				.addAnnotatedClass(Customer.class)
+				.addAnnotatedClass(CustomerEntity.class)
 				.buildSessionFactory();
 		return factory;
+	}
+	
+	@Bean
+	public EntityDtoConverter<CustomerEntity, Customer> customerConverter() {
+		return new CustomerConverter();
 	}
 }

@@ -1,15 +1,11 @@
 package com.luv2code.controllers;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,35 +18,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.luv2code.controllers.util.CustomerEncoder;
 import com.luv2code.controllers.util.ViewTemplate;
-import com.luv2code.entities.Customer;
+import com.luv2code.data.CustomerRepository;
+import com.luv2code.dto.Customer;
 
 @RequestMapping("/customers")
 @Controller
 public class CustomerController {
 	@Autowired
-	private SessionFactory factory;
+	private CustomerRepository repo;
 
 	@RequestMapping(path="/list", method=RequestMethod.GET)
 	public String getAllCustomersForm(Model model) {
-		try (Session session = factory.getCurrentSession();) {
-			session.beginTransaction();
-
-			@SuppressWarnings("unchecked")
-			List<Customer> customers = session.createQuery("from Customer").getResultList();
-
-			session.getTransaction().commit();
-
-			customers.stream().forEach((c) -> {
-				CustomerEncoder.encodeInPlace(c);
-			});
-			customers = customers.stream().sorted(Comparator.comparing(Customer::getLastName)).collect(Collectors.toList());
-			model.addAttribute("customers", customers);
-			model.addAttribute("viewName", "customers-list");
-			model.addAttribute("title", "Customers - Listing");
+		List<Customer> customers;
+		try {
+			customers = repo.getAll();
 		} catch (Exception ex) {
-			System.err.println("\nError occurred retrieving Customers: " + ex.getMessage() + "\n");
+			System.err.println("Exception occurred while getting customers: " + ex.getMessage());
 			return "error";
 		}
+
+		customers.stream().forEach((c) -> {
+			CustomerEncoder.encodeInPlace(c);
+		});
+		model.addAttribute("customers", customers);
+		model.addAttribute("viewName", "customers-list");
 		return "view-template";
 	}
 	
@@ -67,12 +58,8 @@ public class CustomerController {
 			return ViewTemplate.sendViewTemplate(model, "add-customer-form", "Add Customer");
 		}
 		
-		try (Session session = factory.getCurrentSession();) {
-			session.beginTransaction();
-			
-			session.save(customer);
-			
-			session.getTransaction().commit();
+		try {
+			repo.update(customer.getId(), customer);
 			return "redirect:list";
 		} catch(Exception ex) {
 			System.err.println("\nException occurred while saving customer " + customer + ": " + ex.getMessage() + "\n");
@@ -82,20 +69,16 @@ public class CustomerController {
 	
 	@RequestMapping(path="/update/{id}", method=RequestMethod.GET)
 	public String updateCustomerForm(@PathVariable int id, Model model) {
-		try(Session session = factory.getCurrentSession();) {
-			session.beginTransaction();
-			
-			Customer c = session.get(Customer.class, id);
+		try {
+			Customer c = repo.get(id);
 			CustomerEncoder.encodeInPlace(c);
-			
-			session.getTransaction().commit();
 			if(c != null) {
 				model.addAttribute("customer", c);
 				return ViewTemplate.sendViewTemplate(model, "update-form", "Update Customer");
 			}
 			
 			System.err.println("Unable to find customer with id: " + id);
-			return "redirect:../list";
+			return "error";
 		} catch(Exception ex) {
 			System.err.println("\nException occurred while attempting to get customer with id " + id + ": " + ex.getMessage());
 			return "error";
@@ -110,10 +93,8 @@ public class CustomerController {
 		
 		CustomerEncoder.encodeInPlace(customer);
 		
-		try (Session session = factory.getCurrentSession()) {
-			session.beginTransaction();
-			
-			Customer c = session.get(Customer.class, id);
+		try {
+			Customer c = repo.get(id);
 			if(c != null) {
 				c.setEmail(customer.getEmail());
 				c.setFirstName(customer.getFirstName());
@@ -122,7 +103,6 @@ public class CustomerController {
 				System.out.println("No customer found with id: " + id);
 			}
 			
-			session.getTransaction().commit();
 			return "redirect:../list";
 		} catch(Exception ex) {
 			System.err.println("\nException occurred while updating customer with id " + customer.getId() + ": " + ex.getMessage());
@@ -132,16 +112,12 @@ public class CustomerController {
 	
 	@RequestMapping(path="/delete/{id}", method=RequestMethod.POST)
 	public String deleteCustomer(@PathVariable int id) {
-		try (Session session = factory.getCurrentSession();) {
-			session.beginTransaction();
-			
-			Customer c = session.get(Customer.class, id);
+		try {
+			Customer c = repo.get(id);
 			if(c != null) {
 				System.out.println("Deleting Customer: " + c);
-				session.delete(c);
+				repo.delete(id);
 			}
-			
-			session.getTransaction().commit();
 			return "redirect:../list";
 		} catch(Exception ex) {
 			System.err.println("\nError occurred while deleting customer with id " + id + ": " + ex.getMessage() + "\n");

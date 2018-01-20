@@ -37,9 +37,6 @@ public class CustomerController {
 			return "error";
 		}
 
-		customers.stream().forEach((c) -> {
-			CustomerEncoder.encodeInPlace(c);
-		});
 		model.addAttribute("customers", customers);
 		model.addAttribute("viewName", "customers-list");
 		return "view-template";
@@ -59,7 +56,7 @@ public class CustomerController {
 		}
 		
 		try {
-			repo.update(customer.getId(), customer);
+			repo.addNew(customer);
 			return "redirect:list";
 		} catch(Exception ex) {
 			System.err.println("\nException occurred while saving customer " + customer + ": " + ex.getMessage() + "\n");
@@ -94,14 +91,7 @@ public class CustomerController {
 		CustomerEncoder.encodeInPlace(customer);
 		
 		try {
-			Customer c = repo.get(id);
-			if(c != null) {
-				c.setEmail(customer.getEmail());
-				c.setFirstName(customer.getFirstName());
-				c.setLastName(customer.getLastName());
-			} else {
-				System.out.println("No customer found with id: " + id);
-			}
+			repo.update(id, customer);
 			
 			return "redirect:../list";
 		} catch(Exception ex) {

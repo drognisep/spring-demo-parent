@@ -46,6 +46,7 @@
   	<groupId>mysql</groupId>
   	<artifactId>mysql-connector-java</artifactId>
   </dependency>
+  <!-- Replace this dependency with your own, or remove it and see /src/main/resources/README.md for further instructions -->
   <dependency>
   	<groupId>com.saylorsolutions</groupId>
   	<artifactId>crm-project-credentials</artifactId>

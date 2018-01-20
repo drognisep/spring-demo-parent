@@ -6,14 +6,12 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.luv2code.data.CustomerRepository;
 import com.luv2code.data.EntityDtoConverter;
 import com.luv2code.dto.Customer;
 import com.luv2code.entities.CustomerEntity;
 
-@Component
 public class CustomerRepositoryHibernate implements CustomerRepository {
 	@Autowired
 	private SessionFactory factory;
@@ -91,7 +89,7 @@ public class CustomerRepositoryHibernate implements CustomerRepository {
 		try(Session session = factory.getCurrentSession()) {
 			session.beginTransaction();
 			@SuppressWarnings("unchecked")
-			List<CustomerEntity> all = session.createQuery("from CustomerEntity").getResultList();
+			List<CustomerEntity> all = session.createQuery("from CustomerEntity e order by e.lastName, e.firstName").getResultList();
 			for(CustomerEntity e : all) {
 				customers.add(converter.toDto(e));
 			}

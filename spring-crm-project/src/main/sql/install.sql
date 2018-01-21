@@ -23,3 +23,7 @@ INSERT INTO `customers` VALUES
     (1003, 'Ajay', 'Rao', 'ajay@luv2code.com'),
     (1004, 'Mary', 'Public', 'mary@luv2code.com'),
     (1005, 'Maxwell', 'Dixon', 'max@luv2code.com');
+
+-- Ensure you have a user with sufficient grants to access this schema.
+
+-- It's recommended to create a new user that can only access this schema, use the alternative script to accomplish this.

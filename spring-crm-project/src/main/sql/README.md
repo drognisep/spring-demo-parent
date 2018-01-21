@@ -33,3 +33,7 @@ Records: 5  Duplicates: 0  Warnings: 0
 
 mysql>
 ```
+
+### Alternative setup to create a new user that can only access the new schema
+1. Edit variable values in `install_with_new_user.sql` to your liking
+1. Use the correct procedure for your setup above and run `install_with_new_user.sql` instead of `install.sql`
